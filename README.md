@@ -17,12 +17,25 @@ It is supported on both bash and zsh prompts.
 Zsh:
 ```sh
 source /path/to/az-ps1.sh
+# change env substring id in subscription to color environment
+AZ_PS1_DEV_SUBSTR=subd   # default to dev
+AZ_PS1_QA_SUBSTR=subq    # default to qa
+AZ_PS1_PROD_SUBSTR=subp  # default to prod
+
+# Add the prompt to the left
 PROMPT='$(az_ps1)'$PROMPT
 ```
 
 Bash:
 ```sh
 source /path/to/az-ps1.sh
+# change env substring id in subscription to color environment
+AZ_PS1_DEV_SUBSTR=subd   # default to dev
+AZ_PS1_QA_SUBSTR=subq    # default to qa
+AZ_PS1_PROD_SUBSTR=subp  # default to prod
+
+# Add the prompt to the left
+PROMPT='$(az_ps1)'$PROMPT
 PS1='[\u@\h \W $(az_ps1)]\$ '
 ```
 
@@ -76,16 +89,8 @@ The default colors are set with the following environment variables:
 
 | Variable | Default | Meaning |
 | :------- | :-----: | ------- |
-| `AZ_PS1_SUBSCRIPTION_COLOR` | `red` | Set default color of the cluster context |
 | `AZ_PS1_BG_COLOR` | `null` | Set default color of the prompt background |
 
-
-Set the variable to an empty string if you do not want color for each
-prompt section:
-
-```
-AZ_PS1_SUBSCRIPTION_COLOR=''
-```
 
 Names are usable for the following colors:
 

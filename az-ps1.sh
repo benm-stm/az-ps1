@@ -27,12 +27,15 @@ AZ_PS1_BINARY="${AZ_PS1_BINARY:-az}"
 AZ_PS1_JQ_BINARY="${AZ_PS1_JQ_BINARY:-jq}"
 AZ_PS1_PREFIX="${AZ_PS1_PREFIX-(}"
 AZ_PS1_SUFFIX="${AZ_PS1_SUFFIX-)}"
-AZ_PS1_SUBSCRIPTION_COLOR="${AZ_PS1_SUBSCRIPTION_COLOR-red}"
 AZ_PS1_BG_COLOR="${AZ_PS1_BG_COLOR}"
 AZ_PS1_CLOUD_CONFIG_FILE="${HOME}/.azure/clouds.config"
 AZ_PS1_CONFIG_FILE="${HOME}/.azure/config"
 AZ_PS1_AZURE_PROFILE_FILE="${HOME}/.azure/azureProfile.json"
 AZ_PS1_DISABLE_PATH="${HOME}/.azure/az-ps1/disabled"
+
+AZ_PS1_DEV_SUBSTR="${AZ_PS1_DEV_SUBSTR:-dev}"
+AZ_PS1_QA_SUBSTR="${AZ_PS1_QA_SUBSTR:-qa}"
+AZ_PS1_PROD_SUBSTR="${AZ_PS1_PROD_SUBSTR:-prod}"
 
 # Determine our shell
 if [ "${ZSH_VERSION-}" ]; then
@@ -78,16 +81,10 @@ _az_ps1_init() {
 _az_ps1_color_fg() {
   local AZ_PS1_FG_CODE
   case "${1}" in
-    black) AZ_PS1_FG_CODE=0;;
-    red) AZ_PS1_FG_CODE=1;;
-    green) AZ_PS1_FG_CODE=2;;
-    yellow) AZ_PS1_FG_CODE=3;;
-    blue) AZ_PS1_FG_CODE=4;;
-    magenta) AZ_PS1_FG_CODE=5;;
-    cyan) AZ_PS1_FG_CODE=6;;
-    white) AZ_PS1_FG_CODE=7;;
-    # 256
-    [0-9]|[1-9][0-9]|[1][0-9][0-9]|[2][0-4][0-9]|[2][5][0-6]) AZ_PS1_FG_CODE="${1}";;
+    *"$AZ_PS1_DEV_SUBSTR"*) AZ_PS1_FG_CODE=2;;
+    *"$AZ_PS1_QA_SUBSTR"*) AZ_PS1_FG_CODE=3;;
+    *"$AZ_PS1_PROD_SUBSTR"*) AZ_PS1_FG_CODE=1;;
+    # default
     *) AZ_PS1_FG_CODE=default
   esac
 
@@ -277,8 +274,8 @@ az_ps1() {
   # Prefix
   [[ -n "${AZ_PS1_PREFIX}" ]] && AZ_PS1+="${AZ_PS1_PREFIX}"
 
-  # Context
-  AZ_PS1+="$(_az_ps1_color_fg $AZ_PS1_SUBSCRIPTION_COLOR)${AZ_PS1_SUBSCRIPTION}${AZ_PS1_RESET_COLOR}"
+  # Context (Environment Color)
+  AZ_PS1+="$(_az_ps1_color_fg $AZ_PS1_SUBSCRIPTION)${AZ_PS1_SUBSCRIPTION}${AZ_PS1_RESET_COLOR}"
 
   # Suffix
   [[ -n "${AZ_PS1_SUFFIX}" ]] && AZ_PS1+="${AZ_PS1_SUFFIX}"
